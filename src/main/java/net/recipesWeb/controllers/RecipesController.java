@@ -7,7 +7,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/recipes")
 public class RecipesController {
-    private RecipeService recipeService;
+    private final RecipeService recipeService;
+
+    public RecipesController(RecipeService recipeService) {
+        this.recipeService = recipeService;
+    }
 
     @PostMapping()
     public void addRecipe(@RequestBody Recipe recipe) {
