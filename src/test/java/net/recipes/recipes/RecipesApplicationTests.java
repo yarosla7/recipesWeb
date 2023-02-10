@@ -1,4 +1,4 @@
-package net.recipesWeb.recipes;
+package net.recipes.recipes;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package net.recipesWeb.model;
+package net.recipes.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

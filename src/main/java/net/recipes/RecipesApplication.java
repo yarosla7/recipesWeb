@@ -1,4 +1,4 @@
-package net.recipesWeb.recipes;
+package net.recipes;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
