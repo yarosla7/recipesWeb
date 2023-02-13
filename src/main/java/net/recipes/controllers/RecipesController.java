@@ -1,15 +1,23 @@
 package net.recipes.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import net.recipes.model.Recipe;
 import net.recipes.services.RecipeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/recipes")
+@Tag(name = "Рецепты", description = "СRUD-операции над рецептами")
 public class RecipesController {
     private final RecipeService recipeService;
 
@@ -18,6 +26,9 @@ public class RecipesController {
     }
 
     @PostMapping()
+    @Operation(summary = "Добавление нового рецепта",
+            description = "Сохраняет рецепт в список рецептов типа ключ-значение")
+    @ApiResponse(responseCode = "200", description = "Рецепт создан и добавлен в карту")
     public ResponseEntity<Long> addRecipe(@RequestBody Recipe recipe) {
         long id = recipeService.addRecipe(recipe);
         return ResponseEntity.ok().body(id);
@@ -28,15 +39,35 @@ public class RecipesController {
             summary = "поиск по id рецепта",
             description = "Можно искать по айди"
     )
-    public ResponseEntity<Recipe> getRecipeById(@PathVariable int id) {
-        Recipe recipe = recipeService.getRecipe(id);
-        if (recipe == null) {
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Рецепт найден",
+                    content =
+                    @Content(mediaType = "aplication/json",
+                            schema = @Schema(implementation = Recipe.class))
+            ),
+            @ApiResponse(responseCode = "404", description = "Рецепт не найден")
+    })
+    public ResponseEntity<Optional<Recipe>> getRecipeById(@PathVariable int id) {
+        Optional<Recipe> recipe = recipeService.getRecipe(id);
+        if (recipe.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(recipe);
     }
 
     @PutMapping("{id}")
+    @Operation(summary = "Редактирование рецепта",
+            description = "Принимает id рецепта, ищет его в карте и затирает на новые значения по тому же id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Рецепт найден и изменен",
+                    content =
+                    @Content(mediaType = "aplication/json",
+                            schema = @Schema(implementation = Recipe.class))
+            ),
+            @ApiResponse(responseCode = "404", description = "Рецепт не найден")
+    })
     public ResponseEntity<Recipe> editRecipeById(@PathVariable int id, @RequestBody Recipe recipe) {
         Recipe recipe1 = recipeService.editRecipe(id, recipe);
         if (recipe == null) {
@@ -46,6 +77,18 @@ public class RecipesController {
     }
 
     @DeleteMapping("{id}")
+    @Operation(summary = "Удаление рецепта по id",
+            description = "Принимает id рецепта, ищет его в карте и удаляет из неё")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Рецепт найден и удален",
+                    content =
+                    @Content(mediaType = "aplication/json",
+                            schema = @Schema(implementation = Recipe.class))
+
+            ),
+            @ApiResponse(responseCode = "404", description = "Рецепт не найден")
+    })
     public ResponseEntity<Void> deleteRecipeById(@PathVariable int id) {
         if (recipeService.deleteRecipe(id)) {
             return ResponseEntity.ok().build();
@@ -54,6 +97,14 @@ public class RecipesController {
     }
 
     @GetMapping
+    @Operation(summary = "Получение всех рецептов", description = "Возвращает карту, с хранящимися в ней рецептами")
+    @ApiResponse(responseCode = "200",
+            description = "Карта рецептов получена",
+            content = {
+                    @Content(mediaType = "aplication/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Recipe.class)))
+            }
+    )
     public ResponseEntity<Map<Long, Recipe>> getAllRecipes() {
         return ResponseEntity.ok(recipeService.getAllRecipes());
     }

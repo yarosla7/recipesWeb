@@ -3,12 +3,13 @@ package net.recipes.services;
 import net.recipes.model.Recipe;
 
 import java.util.Map;
+import java.util.Optional;
 
 public interface RecipeService {
 
     long addRecipe(Recipe recipe);
 
-    Recipe getRecipe(long id);
+    Optional<Recipe> getRecipe(long id);
 
     Recipe editRecipe(long id, Recipe recipe);
 

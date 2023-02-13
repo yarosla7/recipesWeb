@@ -1,12 +1,18 @@
 package net.recipes.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import net.recipes.model.Ingredient;
 import net.recipes.services.IngredientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/ingredients")
@@ -18,6 +24,9 @@ public class IngredientController {
     }
 
     @PostMapping()
+    @Operation(
+            summary = "Сохраняет ингредиенты"
+    )
     public ResponseEntity<Long> addIngredient(@RequestBody Ingredient ingredient) {
         long id = ingredientService.addIngredient(ingredient);
         return ResponseEntity.ok().body(id);
@@ -28,15 +37,35 @@ public class IngredientController {
             summary = "поиск по id ингредиента",
             description = "Можно искать по айди"
     )
-    public ResponseEntity<Ingredient> getIngredientById(@PathVariable int id) {
-        Ingredient ingredient = ingredientService.getIngredient(id);
-        if (ingredient == null) {
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Ингридиет найден",
+                    content =
+                    @Content(mediaType = "aplication/json",
+                            schema = @Schema(implementation = Ingredient.class))
+            ),
+            @ApiResponse(responseCode = "404", description = "Ингредиент не найден")
+    })
+    public ResponseEntity<Optional<Ingredient>> getIngredientById(@PathVariable int id) {
+        Optional<Ingredient> ingredient = ingredientService.getIngredient(id);
+        if (ingredient.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(ingredient);
     }
 
     @PutMapping("{id}")
+    @Operation(summary = "Редактирование ингредиента по id",
+            description = "Принимает id ингредиента, ищет его в карте и затирает на новые значения по тому же id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Ингридиет найден и изменен",
+                    content =
+                    @Content(mediaType = "aplication/json",
+                            schema = @Schema(implementation = Ingredient.class))
+            ),
+            @ApiResponse(responseCode = "404", description = "Ингредиент не найден")
+    })
     public ResponseEntity<Ingredient> editIngredientById(@PathVariable int id, @RequestBody Ingredient ingredient) {
         Ingredient ingredient1 = ingredientService.editIngredient(id, ingredient);
         if (ingredient == null) {
@@ -46,6 +75,17 @@ public class IngredientController {
     }
 
     @DeleteMapping("{id}")
+    @Operation(summary = "Удаление ингредиента по id",
+            description = "Принимает id ингредиента, ищет его в карте и удаляет из неё")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Ингридиет найден и удален",
+                    content =
+                    @Content(mediaType = "aplication/json",
+                            schema = @Schema(implementation = Ingredient.class))
+            ),
+            @ApiResponse(responseCode = "404", description = "Ингредиент не найден")
+    })
     public ResponseEntity<Void> deleteIngredientById(@PathVariable int id) {
         if (ingredientService.deleteIngredient(id)) {
             return ResponseEntity.ok().build();
@@ -54,6 +94,14 @@ public class IngredientController {
     }
 
     @GetMapping
+    @Operation(summary = "Получение всех ингредиентов", description = "Возвращает карту, с хранящимися в ней игредиентами")
+    @ApiResponse(responseCode = "200",
+            description = "Карта ингредиентов получена",
+            content = {
+                    @Content(mediaType = "aplication/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Ingredient.class)))
+            }
+    )
     public ResponseEntity<Map<Long, Ingredient>> getAllIngredients() {
         return ResponseEntity.ok(ingredientService.getAllIngredient());
     }
