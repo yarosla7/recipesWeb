@@ -29,11 +29,9 @@ public class RecipeServiceImpl implements RecipeService {
     //редактирование рецепта:
     @Override
     public Recipe editRecipe(long id, Recipe recipe) {
-        for (Recipe recipe1 : recipeMap.values()) {
-            if (recipeMap.containsKey(id)) {
-                recipeMap.put(id, recipe);
-                return recipe;
-            }
+        if (recipeMap.containsKey(id)) {
+            recipeMap.put(id, recipe);
+            return recipe;
         }
         return null;
     }
@@ -41,14 +39,13 @@ public class RecipeServiceImpl implements RecipeService {
     //удаление рецепта:
     @Override
     public boolean deleteRecipe(long id) {
-        for (Long recipe : recipeMap.keySet()) {
-            if (recipeMap.containsKey(id)) {
-                recipeMap.remove(id);
-                return true;
-            }
+        if (recipeMap.containsKey(id)) {
+            recipeMap.remove(id);
+            return true;
         }
         return false;
     }
+
     //получение всех рецептов:
     @Override
     public Map<Long, Recipe> getAllRecipes() {
