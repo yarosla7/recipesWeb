@@ -8,13 +8,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class IngredientServiceImpl implements IngredientService {
 
-    private final Map<Long, Ingredient> ingredientMap = new HashMap<>();
     private static long id = 1;
+    private final Map<Long, Ingredient> ingredientMap = new HashMap<>();
     private final ValidationService validationService;
 
     public IngredientServiceImpl(ValidationService validationService) {
@@ -23,7 +22,7 @@ public class IngredientServiceImpl implements IngredientService {
 
     //добавление ингредиентов в мапу:
     @Override
-    public long addIngredient(Ingredient ingredient) {
+    public Long addIngredient(Ingredient ingredient) {
         if (!validationService.validate(ingredient)) {
             throw new ValidationException(ingredient.toString());
         }
@@ -33,13 +32,16 @@ public class IngredientServiceImpl implements IngredientService {
 
     //получение игредиента по айди:
     @Override
-    public Optional<Ingredient> getIngredient(long id) {
-        return Optional.ofNullable(ingredientMap.get(id));
-    } // про Optional рассказал Георгий
+    public Ingredient getIngredient(Long id) {
+        if (!ingredientMap.containsKey(id)) {
+            return null;
+        }
+        return ingredientMap.get(id);
+    }
 
     //редактирование ингредиента:
     @Override
-    public Ingredient editIngredient(long id, Ingredient ingredient) {
+    public Ingredient editIngredient(Long id, Ingredient ingredient) {
         if (!validationService.validate(ingredient)) {
             throw new ValidationException(ingredient.toString());
         }
@@ -48,7 +50,7 @@ public class IngredientServiceImpl implements IngredientService {
 
     //удаление ингредиента:
     @Override
-    public boolean deleteIngredient(long id) {
+    public boolean deleteIngredient(Long id) {
         if (ingredientMap.containsKey(id)) {
             ingredientMap.remove(id);
             return true;

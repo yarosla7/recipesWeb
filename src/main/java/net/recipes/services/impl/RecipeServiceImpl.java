@@ -8,13 +8,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
 
-    private final Map<Long, Recipe> recipeMap = new HashMap<>();
     private static long id = 1;
+    private final Map<Long, Recipe> recipeMap = new HashMap<>();
     private final ValidationService validationService;
 
     public RecipeServiceImpl(ValidationService validationService) {
@@ -23,23 +22,26 @@ public class RecipeServiceImpl implements RecipeService {
 
     //добавление рецепта в мапу рецептов:
     @Override
-    public long addRecipe(Recipe recipe) {
+    public Long addRecipe(Recipe recipe) {
         if (!validationService.validate(recipe)) {
             throw new ValidationException(recipe.toString());
         }
-        recipeMap.put(id++, recipe);
+        recipeMap.put(id, recipe);
         return id++;
     }
 
     //получение рецепта по айди:
     @Override
-    public Optional<Recipe> getRecipe(long id) {
-        return Optional.ofNullable(recipeMap.get(id));
+    public Recipe getRecipe(Long id) {
+        if (!recipeMap.containsKey(id)) {
+            return null;
+        }
+        return recipeMap.get(id);
     }
 
     //редактирование рецепта:
     @Override
-    public Recipe editRecipe(long id, Recipe recipe) {
+    public Recipe editRecipe(Long id, Recipe recipe) {
         if (!validationService.validate(recipe)) {
             throw new ValidationException(recipe.toString());
         }
@@ -48,7 +50,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     //удаление рецепта:
     @Override
-    public boolean deleteRecipe(long id) {
+    public boolean deleteRecipe(Long id) {
         if (recipeMap.containsKey(id)) {
             recipeMap.remove(id);
             return true;

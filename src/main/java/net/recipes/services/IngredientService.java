@@ -3,17 +3,16 @@ package net.recipes.services;
 import net.recipes.model.Ingredient;
 
 import java.util.Map;
-import java.util.Optional;
 
 public interface IngredientService {
 
-    long addIngredient(Ingredient ingredient);
+    Long addIngredient(Ingredient ingredient);
 
-    Optional<Ingredient> getIngredient(long id);
+    Ingredient getIngredient(Long id);
 
-    Ingredient editIngredient(long id, Ingredient ingredient);
+    Ingredient editIngredient(Long id, Ingredient ingredient);
 
-    boolean deleteIngredient(long id);
+    boolean deleteIngredient(Long id);
 
     Map<Long, Ingredient> getAllIngredient();
 }

@@ -13,11 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/recipes")
-@Tag(name = "Рецепты", description = "СRUD-операции над рецептами")
+@Tag(name = "Рецепты", description = "CRUD operations and other endpoints for work with.")
 public class RecipesController {
     private final RecipeService recipeService;
 
@@ -25,7 +24,7 @@ public class RecipesController {
         this.recipeService = recipeService;
     }
 
-    @PostMapping()
+    @PostMapping
     @Operation(summary = "Добавление нового рецепта",
             description = "Сохраняет рецепт в список рецептов типа ключ-значение")
     @ApiResponse(responseCode = "200", description = "Рецепт создан и добавлен в карту")
@@ -34,41 +33,49 @@ public class RecipesController {
         return ResponseEntity.ok().body(id);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(
-            summary = "поиск по id рецепта",
+            summary = "Поиск по id рецепта",
             description = "Можно искать по айди"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
+            @ApiResponse(
+                    responseCode = "200",
                     description = "Рецепт найден",
-                    content =
-                    @Content(mediaType = "aplication/json",
-                            schema = @Schema(implementation = Recipe.class))
-            ),
-            @ApiResponse(responseCode = "404", description = "Рецепт не найден")
+                    content = {
+                            @Content(
+                                    mediaType = "aplication/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = Recipe.class))
+                            )
+                    }
+            )
+
     })
-    public ResponseEntity<Optional<Recipe>> getRecipeById(@PathVariable int id) {
-        Optional<Recipe> recipe = recipeService.getRecipe(id);
-        if (recipe.isEmpty()) {
+    public ResponseEntity<Recipe> getRecipeById(@PathVariable Long id) {
+        Recipe recipe = recipeService.getRecipe(id);
+        if (recipe == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(recipe);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     @Operation(summary = "Редактирование рецепта",
             description = "Принимает id рецепта, ищет его в карте и затирает на новые значения по тому же id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
+            @ApiResponse(
+                    responseCode = "200",
                     description = "Рецепт найден и изменен",
-                    content =
-                    @Content(mediaType = "aplication/json",
-                            schema = @Schema(implementation = Recipe.class))
-            ),
-            @ApiResponse(responseCode = "404", description = "Рецепт не найден")
+                    content = {
+                            @Content(
+                                    mediaType = "aplication/json",
+                                    array = @ArraySchema(schema = @Schema(implementation = Recipe.class))
+                            )
+
+                    }
+            )
     })
-    public ResponseEntity<Recipe> editRecipeById(@PathVariable int id, @RequestBody Recipe recipe) {
+    public ResponseEntity<Recipe> editRecipeById(@PathVariable Long id, @RequestBody Recipe recipe) {
         Recipe recipe1 = recipeService.editRecipe(id, recipe);
         if (recipe == null) {
             return ResponseEntity.notFound().build();
@@ -76,7 +83,7 @@ public class RecipesController {
         return ResponseEntity.ok(recipe1);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(summary = "Удаление рецепта по id",
             description = "Принимает id рецепта, ищет его в карте и удаляет из неё")
     @ApiResponses(value = {
@@ -86,10 +93,9 @@ public class RecipesController {
                     @Content(mediaType = "aplication/json",
                             schema = @Schema(implementation = Recipe.class))
 
-            ),
-            @ApiResponse(responseCode = "404", description = "Рецепт не найден")
+            )
     })
-    public ResponseEntity<Void> deleteRecipeById(@PathVariable int id) {
+    public ResponseEntity<Void> deleteRecipeById(@PathVariable Long id) {
         if (recipeService.deleteRecipe(id)) {
             return ResponseEntity.ok().build();
         }

@@ -3,17 +3,16 @@ package net.recipes.services;
 import net.recipes.model.Recipe;
 
 import java.util.Map;
-import java.util.Optional;
 
 public interface RecipeService {
 
-    long addRecipe(Recipe recipe);
+    Long addRecipe(Recipe recipe);
 
-    Optional<Recipe> getRecipe(long id);
+    Recipe getRecipe(Long id);
 
-    Recipe editRecipe(long id, Recipe recipe);
+    Recipe editRecipe(Long id, Recipe recipe);
 
-    boolean deleteRecipe(long id);
+    boolean deleteRecipe(Long id);
 
     Map<Long, Recipe> getAllRecipes();
 }
