@@ -30,6 +30,10 @@ public class IngredientController {
             summary = "Добавляет ингредиенты в карту",
             description = "Нужно написать название ингредиента, колиство и тип этого количества. Например: штук, грамм, миллилитры."
     )
+    @ApiResponse(
+            responseCode = "200",
+            description = "Ингредиент создан и добавлен в карту"
+    )
     public ResponseEntity<Long> addIngredient(@RequestBody Ingredient ingredient) {
         long id = ingredientService.addIngredient(ingredient);
         return ResponseEntity.ok().body(id);
@@ -45,10 +49,14 @@ public class IngredientController {
                     description = "Ингридиет найден",
                     content = {
                             @Content(
-                                    mediaType = "aplication/json",
+                                    mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = Recipe.class))
                             )
                     }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Ингредиент не найден"
             )
     })
     public ResponseEntity<Ingredient> getIngredientById(@PathVariable Long id) {
@@ -68,10 +76,14 @@ public class IngredientController {
                     description = "Ингридиет найден и изменен",
                     content = {
                             @Content(
-                                    mediaType = "aplication/json",
+                                    mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = Recipe.class))
                             )
                     }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Ингредиент не найден"
             )
     })
     public ResponseEntity<Ingredient> editIngredientById(@PathVariable Long id, @RequestBody Ingredient ingredient) {
@@ -92,10 +104,14 @@ public class IngredientController {
                             description = "Ингридиет найден и удален",
                             content = {
                                     @Content(
-                                            mediaType = "aplication/json",
+                                            mediaType = "application/json",
                                             array = @ArraySchema(schema = @Schema(implementation = Recipe.class))
                                     )
                             }
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Ингредиент не найден"
                     )
             })
     public ResponseEntity<Void> deleteIngredientById(@PathVariable Long id) {
@@ -113,7 +129,7 @@ public class IngredientController {
             responseCode = "200",
             description = "Карта ингредиентов получена",
             content = {
-                    @Content(mediaType = "aplication/json",
+                    @Content(mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = Ingredient.class)))
             }
     )
