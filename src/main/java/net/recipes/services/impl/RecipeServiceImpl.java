@@ -6,6 +6,7 @@ import net.recipes.services.RecipeService;
 import net.recipes.services.ValidationService;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,5 +63,10 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Map<Long, Recipe> getAllRecipes() {
         return recipeMap;
+    }
+
+    @Override
+    public File readFile() {
+        return null;
     }
 }

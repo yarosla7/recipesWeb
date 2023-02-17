@@ -1,24 +1,26 @@
 package net.recipes.services.impl;
 
+import lombok.RequiredArgsConstructor;
 import net.recipes.exception.ValidationException;
 import net.recipes.model.Ingredient;
 import net.recipes.services.IngredientService;
 import net.recipes.services.ValidationService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class IngredientServiceImpl implements IngredientService {
 
     private static long id = 1;
     private final Map<Long, Ingredient> ingredientMap = new HashMap<>();
     private final ValidationService validationService;
+    private String ingredientsFilePath;
 
-    public IngredientServiceImpl(ValidationService validationService) {
-        this.validationService = validationService;
-    }
+
 
     //добавление ингредиентов в мапу:
     @Override
@@ -62,5 +64,9 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public Map<Long, Ingredient> getAllIngredient() {
         return ingredientMap;
+    }
+
+    @PostConstruct
+    private void init() {
     }
 }

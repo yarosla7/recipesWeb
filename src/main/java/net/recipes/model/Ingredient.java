@@ -2,13 +2,15 @@ package net.recipes.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 
 public class Ingredient {
-    private final String name;
-    private final int count;
-    private final String typeOfCount;
+    private String name;
+    private int count;
+    private String typeOfCount;
 
 }
