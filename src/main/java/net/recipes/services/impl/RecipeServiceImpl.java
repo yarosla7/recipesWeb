@@ -4,12 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.recipes.exception.ValidationException;
+import net.recipes.model.Ingredient;
 import net.recipes.model.Recipe;
 import net.recipes.services.FileRecipeService;
 import net.recipes.services.RecipeService;
 import net.recipes.services.ValidationService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -30,7 +30,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @PostConstruct
     private void init() {
-        readFile();
+        readFromFile();
     }
 
     //добавление рецепта в мапу рецептов:
@@ -79,11 +79,6 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Map<Long, Recipe> getAllRecipes() {
         return recipeMap;
-    }
-
-    @Override
-    public File readFile() {
-        return null;
     }
 
     private void saveToFile() {

@@ -16,6 +16,4 @@ public interface RecipeService {
     boolean deleteRecipe(Long id);
 
     Map<Long, Recipe> getAllRecipes();
-
-    File readFile();
 }
