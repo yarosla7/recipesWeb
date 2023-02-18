@@ -11,9 +11,10 @@ import java.nio.file.Path;
 
 @Service
 public class FileRecipeServiceImpl implements FileRecipeService {
-    @Value("${path.to.data.file}")
-    private String dataFileName;
     @Value("${name.of.data.file.recipes}")
+    private String dataFileName;
+
+    @Value("${path.to.data.file}")
     private String dataFilePath;
 
     @Override
