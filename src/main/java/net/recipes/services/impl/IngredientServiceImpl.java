@@ -1,6 +1,8 @@
 package net.recipes.services.impl;
 
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.recipes.exception.ValidationException;
 import net.recipes.model.Ingredient;
 import net.recipes.services.IngredientService;
@@ -12,15 +14,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
 public class IngredientServiceImpl implements IngredientService {
 
     private static long id = 1;
-    private final Map<Long, Ingredient> ingredientMap = new HashMap<>();
+    private Map<Long, Ingredient> ingredientMap = new HashMap<>();
     private final ValidationService validationService;
-    private String ingredientsFilePath;
+    final private FileIngredientServiceImpl fileIngredientService;
 
+    public IngredientServiceImpl(ValidationService validationService, FileIngredientServiceImpl fileIngredientService) {
+        this.validationService = validationService;
+        this.fileIngredientService = fileIngredientService;
+    }
 
+    @PostConstruct
+    private void init() {
+        readFromFile();
+    }
 
     //добавление ингредиентов в мапу:
     @Override
@@ -29,10 +38,11 @@ public class IngredientServiceImpl implements IngredientService {
             throw new ValidationException(ingredient.toString());
         }
         ingredientMap.put(id, ingredient);
+        saveToFile();
         return id++;
     }
 
-    //получение игредиента по айди:
+    //получение ингредиента по айди:
     @Override
     public Ingredient getIngredient(Long id) {
         if (!ingredientMap.containsKey(id)) {
@@ -47,7 +57,9 @@ public class IngredientServiceImpl implements IngredientService {
         if (!validationService.validate(ingredient)) {
             throw new ValidationException(ingredient.toString());
         }
-        return ingredientMap.replace(id, ingredient);
+        ingredientMap.replace(id, ingredient);
+        saveToFile();
+        return ingredientMap.get(id);
     }
 
     //удаление ингредиента:
@@ -55,6 +67,7 @@ public class IngredientServiceImpl implements IngredientService {
     public boolean deleteIngredient(Long id) {
         if (ingredientMap.containsKey(id)) {
             ingredientMap.remove(id);
+            saveToFile();
             return true;
         }
         return false;
@@ -66,7 +79,21 @@ public class IngredientServiceImpl implements IngredientService {
         return ingredientMap;
     }
 
-    @PostConstruct
-    private void init() {
+    private void saveToFile() {
+        try {
+            String json = new ObjectMapper().writeValueAsString(ingredientMap);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void readFromFile() {
+        String json = fileIngredientService.readFromFile();
+        try {
+            ingredientMap = new ObjectMapper().readValue(json, new TypeReference<Map<Long, Ingredient>>() {
+            });
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

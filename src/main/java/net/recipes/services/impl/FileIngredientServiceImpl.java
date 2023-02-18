@@ -1,7 +1,7 @@
 package net.recipes.services.impl;
 
-import lombok.Value;
 import net.recipes.services.FileIngredientService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -9,18 +9,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Service
-
 public class FileIngredientServiceImpl implements FileIngredientService {
 
-    @Value("${name.to.data.file}")
-    private String nameDataFile;
+    @Value("${name.of.data.file.ingredients}")
+    private String dataFileName;
     @Value("${path.to.data.file}")
-    private String pathDataFile;
+    private String dataFilePath;
 
     @Override
-    public boolean saveIngredientToFile(String json) {
+    public boolean saveToFile(String json) {
         try {
-            Files.writeString(Path.of(pathDataFile, nameDataFile), json);
+            cleanDataFile();
+            Files.writeString(Path.of(dataFilePath, dataFileName), json);
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -29,10 +29,23 @@ public class FileIngredientServiceImpl implements FileIngredientService {
     }
 
     @Override
-    public String readFromIngredientFile() {
+    public String readFromFile() {
         try {
-            return Files.readString(Path.of(pathDataFile, nameDataFile));
+            return Files.readString(Path.of(dataFilePath, dataFileName));
         } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean cleanDataFile() {
+        try {
+            Path path = Path.of(dataFilePath, dataFileName);
+            Files.deleteIfExists(path);
+            Files.createFile(path);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

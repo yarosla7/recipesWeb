@@ -18,6 +18,7 @@ import java.util.Map;
 @RequestMapping("/recipes")
 @Tag(name = "Рецепты",
         description = "CRUD operations and other endpoints for work with.")
+
 public class RecipesController {
     private final RecipeService recipeService;
 

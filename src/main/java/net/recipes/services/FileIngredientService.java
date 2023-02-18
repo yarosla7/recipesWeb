@@ -1,7 +1,20 @@
 package net.recipes.services;
-
 public interface FileIngredientService {
-    boolean saveIngredientToFile(String json);
+    /**
+     * Сохранение объекта в файл
+     * @param json - формат файла
+     * @return - возвращает true, если объект сохранен в файл
+     */
+    boolean saveToFile(String json);
 
-    String readFromIngredientFile();
+    /**
+     * чтение из файла и добавление в мапу
+     * @return - возвращает строку
+     */
+    String readFromFile();
+
+    /**
+     * удаление файла
+     * @return - возвращает true, если файл пустой
+     */
 }
