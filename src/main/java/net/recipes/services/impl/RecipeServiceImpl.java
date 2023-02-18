@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.recipes.exception.ValidationException;
-import net.recipes.model.Ingredient;
 import net.recipes.model.Recipe;
 import net.recipes.services.FileRecipeService;
 import net.recipes.services.RecipeService;

@@ -46,7 +46,7 @@ public class IngredientController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
-                    description = "Ингридиет найден",
+                    description = "Ингредиент найден",
                     content = {
                             @Content(
                                     mediaType = "application/json",
@@ -73,7 +73,7 @@ public class IngredientController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Ингридиет найден и изменен",
+                    description = "Ингредиент найден и изменен",
                     content = {
                             @Content(
                                     mediaType = "application/json",
@@ -101,7 +101,7 @@ public class IngredientController {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Ингридиет найден и удален",
+                            description = "Ингредиент найден и удален",
                             content = {
                                     @Content(
                                             mediaType = "application/json",

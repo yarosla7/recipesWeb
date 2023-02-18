@@ -4,6 +4,7 @@ import net.recipes.services.FileIngredientService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,6 +39,12 @@ public class FileIngredientServiceImpl implements FileIngredientService {
         }
     }
 
+    @Override
+    public File getDataFile() {
+        return new File(dataFilePath + "/" + dataFileName);
+    }
+
+    @Override
     public boolean cleanDataFile() {
         try {
             Path path = Path.of(dataFilePath, dataFileName);

@@ -1,7 +1,11 @@
 package net.recipes.services;
+
+import java.io.File;
+
 public interface FileIngredientService {
     /**
      * Сохранение объекта в файл
+     *
      * @param json - формат файла
      * @return - возвращает true, если объект сохранен в файл
      */
@@ -9,12 +13,17 @@ public interface FileIngredientService {
 
     /**
      * чтение из файла и добавление в мапу
+     *
      * @return - возвращает строку
      */
     String readFromFile();
 
     /**
-     * удаление файла
-     * @return - возвращает true, если файл пустой
+     * получение файла
+     *
+     * @return файл
      */
+    File getDataFile();
+
+    boolean cleanDataFile();
 }
