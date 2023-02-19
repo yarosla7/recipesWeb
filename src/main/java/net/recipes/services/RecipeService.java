@@ -3,6 +3,7 @@ package net.recipes.services;
 import net.recipes.model.Recipe;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 public interface RecipeService {
@@ -16,4 +17,6 @@ public interface RecipeService {
     boolean deleteRecipe(Long id);
 
     Map<Long, Recipe> getAllRecipes();
+
+    File recipesToTxt() throws IOException;
 }

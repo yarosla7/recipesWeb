@@ -1,1 +1,114 @@
-{}
+{
+  "1": {
+    "name": "блины",
+    "timeTo": 44,
+    "ingredients": [
+      {
+        "name": "посолить",
+        "count": 2,
+        "typeOfCount": "по вкусу"
+      }
+    ],
+    "steps": [
+      "string"
+    ]
+  },
+  "2": {
+    "name": "блины",
+    "timeTo": 44,
+    "ingredients": [
+      {
+        "name": "посолить",
+        "count": 2,
+        "typeOfCount": "по вкусу"
+      }
+    ],
+    "steps": [
+      "string"
+    ]
+  },
+  "3": {
+    "name": "блины",
+    "timeTo": 44,
+    "ingredients": [
+      {
+        "name": "посолить",
+        "count": 2,
+        "typeOfCount": "по вкусу"
+      }
+    ],
+    "steps": [
+      "string"
+    ]
+  },
+  "4": {
+    "name": "блины",
+    "timeTo": 44,
+    "ingredients": [
+      {
+        "name": "посолить",
+        "count": 2,
+        "typeOfCount": "по вкусу"
+      }
+    ],
+    "steps": [
+      "string"
+    ]
+  },
+  "5": {
+    "name": "блины",
+    "timeTo": 44,
+    "ingredients": [
+      {
+        "name": "посолить",
+        "count": 2,
+        "typeOfCount": "по вкусу"
+      }
+    ],
+    "steps": [
+      "string"
+    ]
+  },
+  "6": {
+    "name": "блины",
+    "timeTo": 44,
+    "ingredients": [
+      {
+        "name": "посолить",
+        "count": 2,
+        "typeOfCount": "по вкусу"
+      }
+    ],
+    "steps": [
+      "string"
+    ]
+  },
+  "7": {
+    "name": "блины",
+    "timeTo": 44,
+    "ingredients": [
+      {
+        "name": "посолить",
+        "count": 2,
+        "typeOfCount": "по вкусу"
+      }
+    ],
+    "steps": [
+      "string"
+    ]
+  },
+  "8": {
+    "name": "блины",
+    "timeTo": 44,
+    "ingredients": [
+      {
+        "name": "посолить",
+        "count": 2,
+        "typeOfCount": "по вкусу"
+      }
+    ],
+    "steps": [
+      "string"
+    ]
+  }
+}

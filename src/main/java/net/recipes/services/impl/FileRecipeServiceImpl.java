@@ -14,12 +14,13 @@ import java.nio.file.Path;
 public class FileRecipeServiceImpl implements FileRecipeService {
     @Value("${name.of.data.file.recipes}")
     private String dataFileName;
-
+    @Value("${name.of.data.txt.file.recipes}")
+    private String dataTxtFileName;
     @Value("${path.to.data.file}")
     private String dataFilePath;
 
     @Override
-    public boolean saveToFile(String json) {
+    public boolean saveToMap(String json) {
         try {
             cleanDataFile();
             Files.writeString(Path.of(dataFilePath, dataFileName), json);
@@ -55,5 +56,28 @@ public class FileRecipeServiceImpl implements FileRecipeService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public Path returnPath() {
+        Path path = Path.of(dataFilePath, dataTxtFileName);
+        try {
+            Files.deleteIfExists(path);
+            Files.createFile(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return path;
+    }
+
+    @Override
+    public Path saveToFile(String content, Path path) throws IOException {
+        createNewFile(path);
+        return Files.writeString(path, content);
+    }
+
+    private void createNewFile(Path path) throws IOException {
+        Files.deleteIfExists(path);
+        Files.createFile(path);
     }
 }

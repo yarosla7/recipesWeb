@@ -1,6 +1,8 @@
 package net.recipes.services;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
 
 public interface FileRecipeService {
     /**
@@ -9,7 +11,7 @@ public interface FileRecipeService {
      * @param json - формат файла
      * @return - возвращает true, если объект сохранен в файл
      */
-    boolean saveToFile(String json);
+    boolean saveToMap(String json);
 
     /**
      * чтение из файла и добавление в мапу
@@ -26,4 +28,8 @@ public interface FileRecipeService {
     File getDataFile();
 
     boolean cleanDataFile();
+
+    Path returnPath();
+
+    Path saveToFile(String content, Path path) throws IOException;
 }
