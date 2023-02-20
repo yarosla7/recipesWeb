@@ -16,6 +16,8 @@ public interface RecipeService {
 
     boolean deleteRecipe(Long id);
 
+    void deleteAllRecipes();
+
     Map<Long, Recipe> getAllRecipes();
 
     File recipesToTxt() throws IOException;

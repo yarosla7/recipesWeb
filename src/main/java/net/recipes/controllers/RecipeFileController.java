@@ -50,7 +50,7 @@ public class RecipeFileController {
                     )
             }
     )
-    @GetMapping(value = "/export/")
+    @GetMapping(value = "/export")
     public ResponseEntity<InputStreamResource> downloadDataFile() {
         try {
             File file = recipeFileService.getDataFile();

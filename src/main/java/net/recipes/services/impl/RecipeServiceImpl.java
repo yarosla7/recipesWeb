@@ -31,7 +31,11 @@ public class RecipeServiceImpl implements RecipeService {
 
     @PostConstruct
     private void init() {
-        readFromFile();
+        try {
+            readFromFile();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //добавление рецепта в мапу рецептов:
@@ -76,6 +80,11 @@ public class RecipeServiceImpl implements RecipeService {
         return false;
     }
 
+    @Override
+    public void deleteAllRecipes() {
+        recipeMap.clear();
+    }
+
     //получение всех рецептов:
     @Override
     public Map<Long, Recipe> getAllRecipes() {
@@ -108,7 +117,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     private String recipesToString() {
         StringBuilder stringBuilder = new StringBuilder();
-        String dot = "\t• ";
+        String dot = "\n• ";
         for (Recipe recipe : recipeMap.values()) {
             stringBuilder.append("\n").append(recipe.toString()).append("\n");
             stringBuilder.append("\nИнгредиенты:\n");

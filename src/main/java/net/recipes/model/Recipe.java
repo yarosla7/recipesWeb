@@ -19,6 +19,6 @@ public class Recipe {
 
     @Override
     public String toString() {
-        return name + "\n Время приготовления: " + timeTo;
+        return name + "\nВремя приготовления: " + timeTo;
     }
 }

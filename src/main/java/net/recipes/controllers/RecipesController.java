@@ -134,4 +134,19 @@ public class RecipesController {
     public ResponseEntity<Map<Long, Recipe>> getAllRecipes() {
         return ResponseEntity.ok(recipeService.getAllRecipes());
     }
+
+    @DeleteMapping
+    @Operation(summary = "Удаление всех рецептов", description = "Возвращает пустую карту")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Карта рецептов очищена",
+            content = {
+                    @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Recipe.class)))
+            }
+    )
+    public ResponseEntity<Void> deleteAllRecipes() {
+        recipeService.deleteAllRecipes();
+        return ResponseEntity.ok().build();
+    }
 }

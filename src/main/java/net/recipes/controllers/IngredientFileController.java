@@ -14,7 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/files/ingredients")
@@ -41,7 +44,7 @@ public class IngredientFileController {
                     )
             }
     )
-    @GetMapping(value = "/export/")
+    @GetMapping(value = "/export")
     public ResponseEntity<InputStreamResource> downloadDataFile() {
         try {
             File file = ingredientService.getDataFile();
